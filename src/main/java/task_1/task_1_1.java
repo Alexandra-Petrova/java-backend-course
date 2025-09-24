@@ -1,23 +1,34 @@
 package task_1;
 
 import java.util.InputMismatchException;
-import java.util.Locale;
 import java.util.Scanner;
 
 public class task_1_1 {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        scanner.useLocale(Locale.US);
 
         System.out.print("Введите размер массива: ");
-        int size = scanner.nextInt();
+        int size;
+        try {
+            size = scanner.nextInt();
+        } catch (InputMismatchException e) {
+            System.out.println("Размер массива должен быть целым числом!");
+            return;
+        }
+
         if (size <= 0) {
             System.out.println("Ошибка - размер массива должен быть больше 0!");
             return;
         }
 
-        System.out.print("Выберите тип массива (1 - int, 2 - double): ");
-        int type = scanner.nextInt();
+        System.out.print("Выберите тип массива (1 - int, 2 - double (десятичные числа вводятся через запятую)): ");
+        int type;
+        try {
+            type = scanner.nextInt();
+        } catch (InputMismatchException e) {
+            System.out.println("Неверный тип массива!");
+            return;
+        }
 
         if (type == 1) {
             int minValue;
@@ -92,21 +103,21 @@ public class task_1_1 {
                 array[i] = Math.random() * (maxValue - minValue) + minValue;
             }
             System.out.println("Массив: ");
-            for (double val : array) System.out.print(val + " ");
+            for (double val : array) System.out.printf("%.2f ", val);
             System.out.println();
 
-            System.out.println("Максимальное значение: " + getMax(array));
-            System.out.println("Минимальное значение: " + getMin(array));
-            System.out.println("Среднее значение: " + getAverage(array));
+            System.out.printf("Максимальное значение: %.2f%n", getMax(array));
+            System.out.printf("Минимальное значение: %.2f%n", getMin(array));
+            System.out.printf("Среднее значение: %.2f%n", getAverage(array));
 
             sortArrayAscending(array);
             System.out.println("Сортировка по возрастанию: ");
-            for (double val : array) System.out.print(val + " ");
+            for (double val : array) System.out.printf("%.2f ", val);
             System.out.println();
 
             sortArrayDescending(array);
             System.out.println("Сортировка по убыванию: ");
-            for (double val : array) System.out.print(val + " ");
+            for (double val : array) System.out.printf("%.2f ", val);
             System.out.println();
 
         } else {
