@@ -7,14 +7,21 @@ public class task_1_2 {
         String expression;
         Scanner scanner = new Scanner(System.in);
 
-        System.out.println("Поддерживаемые типы операций: +, -, *, /, %, //, ^");
-        System.out.print("Введите выражение: ");
+        System.out.println("Поддерживаемые типы операций: +, -, *, /, %, //, ^.");
+        System.out.print("Введите выражение (десятичные числа вводятся через точку): ");
+
         while (!(expression = scanner.nextLine()).equals("exit")) {
+            // Вызов функции для проверки корректности введенного выражения
             String[] userArray = isExpressionCorrect(expression);
             if (userArray != null) {
-                double result = calculate(userArray);
+                double a = Double.parseDouble(userArray[0]);
+                double b = Double.parseDouble(userArray[2]);
+                String operator = userArray[1];
+                // Вызов функции для нахождения значения выражения
+                double result = calculate(a, b, operator);
+                // Обработка результатов вычислений
                 if (!Double.isNaN(result)) {
-                    System.out.println("Результат: " + calculate(userArray));
+                    System.out.println("Результат: " + result);
                 } else {
                     System.out.println("Ошибка! Деление на ноль.");
                 }
@@ -29,9 +36,8 @@ public class task_1_2 {
     /**
      * Проверяет корректность выражения: его длину, тип данных, тип операций.
      *
-     * @param userExpression Строка с выражением.
-     * @return Массив типа String с числами и оператором,
-     * null в случае невыполнения одного из заданных условий.
+     * @param userExpression Строка с выражением вида "число оператор число".
+     * @return Массив типа String с числами и оператором, либо null в случае некорректного ввода.
      */
     public static String[] isExpressionCorrect (String userExpression) {
         String[] parts = userExpression.trim().split(" ");
@@ -52,42 +58,42 @@ public class task_1_2 {
     }
 
     /**
-     * Находит результат выражения, указанного в массиве.
+     * Вычисляет результат выражения для двух операндов и оператора.
      *
-     * @param expParts Массив с данными выражения.
-     * @return Результат вычисления.
+     * @param a Первый операнд.
+     * @param b Второй операнд.
+     * @param operator Оператор ("+", "-", "*", "/", "%", "//", "^").
+     * @return Результат вычисления или NaN при делении на ноль.
      */
-    public static double calculate (String[] expParts) {
-        double firstNumber = Double.parseDouble(expParts[0]);
-        double secondNumber = Double.parseDouble(expParts[2]);
+    public static double calculate (double a, double b, String operator) {
         double result = Double.NaN;
-        switch (expParts[1]) {
+        switch (operator) {
             case ("+"): {
-                result = sum(firstNumber, secondNumber);
+                result = sum(a, b);
                 break;
             }
             case ("-"): {
-                result = subtract(firstNumber, secondNumber);
+                result = subtract(a, b);
                 break;
             }
             case ("*"): {
-                result = multiply(firstNumber, secondNumber);
+                result = multiply(a, b);
                 break;
             }
             case ("/"): {
-                result = divide(firstNumber, secondNumber);
+                result = divide(a, b);
                 break;
             }
             case ("%"): {
-                result = module(firstNumber, secondNumber);
+                result = module(a, b);
                 break;
             }
             case ("^"): {
-                result = pow(firstNumber, secondNumber);
+                result = pow(a, b);
                 break;
             }
             case ("//"): {
-                result = integerDivide(firstNumber, secondNumber);
+                result = integerDivide(a, b);
                 break;
             }
         }
@@ -132,7 +138,7 @@ public class task_1_2 {
      *
      * @param a Делимое.
      * @param b Делитель.
-     * @return Частное от деления чисел a и b.
+     * @return Частное от деления, либо NaN при делении на ноль
      */
     public static double divide (double a, double b) {
         if (b == 0) {
@@ -148,10 +154,14 @@ public class task_1_2 {
      *
      * @param a Делимое.
      * @param b Делитель.
-     * @return Остаток от деления чисел a и b.
+     * @return Остаток от деления чисел a и b, либо NaN при делении на ноль.
      */
     public static double module (double a, double b) {
-        return a % b;
+        if (b == 0) {
+            return Double.NaN;
+        } else {
+            return a % b;
+        }
     }
 
     /**
@@ -166,11 +176,11 @@ public class task_1_2 {
     }
 
     /**
-     * Вычисляет целочисленный остаток при делении двух чисел.
+     * Находит целую часть от деления двух чисел.
      *
      * @param a Делимое.
      * @param b Делитель.
-     * @return Целочисленный остаток от деления чисел a и b.
+     * @return Целая часть от деления чисел a и b, либо NaN при делении на ноль.
      */
     public static double integerDivide (double a, double b) {
         if (b == 0) {
