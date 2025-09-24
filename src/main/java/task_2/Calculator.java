@@ -1,6 +1,17 @@
 package task_2;
 
+/**
+ * Реализует калькулятор, который умеет выполнять следующие арифметические операции: +, -, *, /, %, //, ^.
+ */
 public class Calculator {
+    /**
+     * Вычисляет результат выражения для двух операндов и оператора.
+     *
+     * @param a Первый операнд.
+     * @param b Второй операнд.
+     * @param operator Оператор ("+", "-", "*", "/", "%", "//", "^").
+     * @return Результат вычисления, либо NaN при делении на ноль.
+     */
     public double compute(double a, double b, String operator) {
         Operation operation;
         switch (operator) {
