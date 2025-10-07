@@ -38,4 +38,4 @@ This repository contains my homework assignments for the Java Backend course.
 - `Fuel` - топливо (бензин, электричество, дизель, нет топлива).
 
 Ниже приведена UML-диаграмма реализованной иерархии.
-![UML Diagram](src\main\java\task_3\UML-diagram_Task_3.png)
+![UML Diagram](src/main/java/task_3/UML-diagram_Task_3.png)
