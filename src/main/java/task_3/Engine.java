@@ -5,6 +5,9 @@ public class Engine {
     protected double power;
 
     public Engine(Fuel fuelType, double power) {
+        if (power < 0.) {
+            throw new InvalidVehicleDataException("Мощность не может быть меньше нуля!");
+        }
         this.fuelType = fuelType;
         this.power = power;
     }
