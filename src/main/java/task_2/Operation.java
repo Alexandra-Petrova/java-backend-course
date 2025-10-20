@@ -92,7 +92,7 @@ class Multiply extends Operation{
 
 /**
  * Выполняет операцию деления двух чисел.
- * Если делитель равен нулю, результатом будет NaN.
+ * Если делитель равен нулю, выбрасывает DivisionByZeroException.
  */
 class Divide extends Operation {
     /**
@@ -108,12 +108,12 @@ class Divide extends Operation {
     /**
      * Вычисляет частное от деления двух чисел.
      *
-     * @return Частное от деления, либо NaN при делении на ноль
+     * @return Частное от деления
      */
     @Override
     public double calculate() {
         if (b == 0) {
-            return Double.NaN;
+            throw new DivisionByZeroException("Ошибка! Деление на ноль.");
         } else {
             return a / b;
         }
@@ -147,7 +147,7 @@ class Pow extends Operation {
 
 /**
  * Выполняет операцию целочисленного деления двух чисел.
- * Если делитель равен нулю, результатом будет NaN.
+ * Если делитель равен нулю, выбрасывает DivisionByZeroException.
  */
 class IntegerDivide extends Operation {
     /**
@@ -163,12 +163,12 @@ class IntegerDivide extends Operation {
     /**
      * Находит целую часть от деления двух чисел.
      *
-     * @return Целая часть от деления чисел a и b, либо NaN при делении на ноль.
+     * @return Целая часть от деления чисел a и b.
      */
     @Override
     public double calculate() {
         if (b == 0) {
-            return Double.NaN;
+            throw new DivisionByZeroException("Ошибка! Деление на ноль.");
         } else {
             return Math.floor(a / b);
         }
@@ -177,7 +177,7 @@ class IntegerDivide extends Operation {
 
 /**
  * Выполняет операцию нахождения остатка от деления двух чисел.
- * Если делитель равен нулю, результатом будет NaN.
+ * Если делитель равен нулю, выбрасывает DivisionByZeroException.
  */
 class Module extends Operation {
     /**
@@ -193,14 +193,20 @@ class Module extends Operation {
     /**
      * Вычисляет остаток от деления двух чисел.
      *
-     * @return Остаток от деления чисел a и b, либо NaN при делении на ноль.
+     * @return Остаток от деления чисел a и b.
      */
     @Override
     public double calculate() {
         if (b == 0) {
-            return Double.NaN;
+            throw new DivisionByZeroException("Ошибка! Деление на ноль.");
         } else {
             return a % b;
         }
+    }
+}
+
+class DivisionByZeroException extends RuntimeException {
+    public DivisionByZeroException(String message) {
+        super(message);
     }
 }
