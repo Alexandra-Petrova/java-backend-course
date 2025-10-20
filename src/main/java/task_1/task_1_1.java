@@ -19,6 +19,9 @@ public class task_1_1 {
         if (size <= 0) {
             System.out.println("Ошибка - размер массива должен быть больше 0!");
             return;
+        } else if (size > 1000000) {
+            System.out.println("Ошибка - размер массива слишком большой!");
+            return;
         }
 
         System.out.print("Выберите тип массива (1 - int, 2 - double (десятичные числа вводятся через запятую)): ");
@@ -83,10 +86,22 @@ public class task_1_1 {
 
         } else if (type == 2) {
             System.out.print("Введите минимальное значение: ");
-            double minValue = scanner.nextDouble();
+            double minValue;
+            double maxValue;
+            try {
+                minValue = scanner.nextDouble();
+            } catch (InputMismatchException e) {
+                System.out.println("Некорректный десятичный разделитель или тип данных!");
+                return;
+            }
 
             System.out.print("Введите максимальное значение: ");
-            double maxValue = scanner.nextDouble();
+            try {
+                maxValue = scanner.nextDouble();
+            } catch (InputMismatchException e) {
+                System.out.println("Некорректный формат или тип!");
+                return;
+            }
 
             if (minValue > maxValue) {
                 System.out.println("Ошибка - минимальное значение больше максимального!");
