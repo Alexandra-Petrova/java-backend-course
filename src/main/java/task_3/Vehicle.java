@@ -6,6 +6,12 @@ public abstract class Vehicle {
     protected final Engine typeOfEngine;
 
     public Vehicle (String model, double speed, Engine typeOfEngine) {
+        if (model == null || model.isEmpty()) {
+            throw new InvalidVehicleDataException("Некорректная модель!");
+        }
+        if (speed < 0.) {
+            throw new InvalidVehicleDataException("Скорость не может быть меньше нуля!");
+        }
         this.model = model;
         this.speed = speed;
         this.typeOfEngine = typeOfEngine;
@@ -28,6 +34,9 @@ public abstract class Vehicle {
     }
 
     public void setSpeed(double newSpeed) {
+        if (newSpeed < 0.) {
+            throw new InvalidVehicleDataException("Скорость не может быть меньше нуля!");
+        }
         speed = newSpeed;
     }
 

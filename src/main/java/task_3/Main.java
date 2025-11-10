@@ -5,24 +5,27 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
+        try {
+            run();
+        } catch (InvalidVehicleDataException e) {
+            System.out.println("Ошибка при создании транспортного средства. " + e.getMessage());
+        }
+    }
+
+    private static void run() {
         Scanner scanner = new Scanner(System.in);
 
         System.out.println("Какой тип транспортного средства вы хотите создать (1 - автомобиль, 2 - велосипед, 3 - корабль, 4 - самолет)?");
         System.out.print("Введите соответствующую цифру: ");
-        int typeOfTransport;
-        try {
-            typeOfTransport = scanner.nextInt();
-        } catch (InputMismatchException e) {
-            System.out.println("Некорректный тип транспортного средства!");
-            return;
-        }
+        int typeOfTransport = readIntValueInRange(
+                scanner, 1, 4, "Некорректный тип транспортного средства!");
         scanner.nextLine();
 
         System.out.print("Введите модель: ");
         String model = scanner.nextLine();
 
         System.out.print("Введите скорость (км/ч): ");
-        double speed = scanner.nextDouble();
+        double speed = readPositiveDouble(scanner, "Некорректное значение скорости!");
 
         Vehicle vehicle;
 
@@ -31,13 +34,8 @@ public class Main {
         } else {
             System.out.println("Выберите тип топлива (1 - бензин, 2 - электричество, 3 - дизель, 4 - нет топлива):");
             System.out.print("Введите соответствующую цифру: ");
-            int typeOfFuel;
-            try {
-                typeOfFuel = scanner.nextInt();
-            } catch (InputMismatchException e) {
-                System.out.println("Некорректный тип топлива!");
-                return;
-            }
+            int typeOfFuel = readIntValueInRange(
+                    scanner, 1, 4, "Некорректный тип топлива!");
 
             Fuel fuel = switch (typeOfFuel) {
                 case 1 -> Fuel.PETROL;
@@ -47,7 +45,7 @@ public class Main {
             };
 
             System.out.print("Введите мощность двигателя (л.с.): ");
-            double power = scanner.nextDouble();
+            double power = readPositiveDouble(scanner, "Некорректное значение мощности двигателя!");
             Engine engine = new Engine(fuel, power);
 
             switch (typeOfTransport) {
@@ -73,19 +71,15 @@ public class Main {
 
         boolean running = true;
         while (running) {
-            int action = scanner.nextInt();
+            int action = readIntValueInRange(
+                    scanner, 1, 5, "Некорректное значение!");
 
             switch (action) {
                 case 1 -> vehicle.infoAboutVehicle();
                 case 2 -> vehicle.move();
                 case 3 -> {
                     System.out.print("Введите новое значение скорости: ");
-                    double delta = 0.0;
-                    try {
-                        delta = scanner.nextDouble();
-                    } catch (InputMismatchException e) {
-                        System.out.println("Некорректное значение скорости, попробуйте еще раз!");
-                    }
+                    double delta = readPositiveDouble(scanner, "Некорректное значение скорости!");
                     vehicle.setSpeed(delta);
                     System.out.printf("Новое значение скорости - %s км/ч.", vehicle.getSpeed());
                     System.out.println();
@@ -99,5 +93,39 @@ public class Main {
             }
         }
         scanner.close();
+    }
+
+    private static int readIntValueInRange(Scanner scanner, int min, int max, String errorOutOfRangeMessage) {
+        int value;
+        while (true) {
+            try {
+                value = scanner.nextInt();
+                if (value < min || value > max) {
+                    System.out.printf(errorOutOfRangeMessage + " Число должно быть в диапазоне от %s до %s. Попробуйте еще раз.\n", min, max);
+                    continue;
+                }
+                return value;
+            } catch (InputMismatchException e) {
+                System.out.println("Некорректный тип данных! Попробуйте еще раз.");
+                scanner.nextLine();
+            }
+        }
+    }
+
+    private static double readPositiveDouble(Scanner scanner, String errorMessage) {
+        double value;
+        while (true) {
+            try {
+                value = scanner.nextDouble();
+                if (value < 0) {
+                    System.out.println("Значение не может быть отрицательным! Попробуйте еще раз.");
+                    continue;
+                }
+                return value;
+            } catch (InputMismatchException e) {
+                System.out.println(errorMessage + " Попробуйте еще раз.");
+                scanner.nextLine();
+            }
+        }
     }
 }
